@@ -11,3 +11,33 @@ variable "zone" {
   type    = string
   default = "asia-northeast1-a"
 }
+
+variable "service_account_id" {
+  type    = string
+  default = "github-actions"
+}
+
+variable "workload_identity_pool_id" {
+  type    = string
+  default = "github-actions-pool"
+}
+
+variable "workload_identity_pool_provider_id" {
+  type    = string
+  default = "github-actions-provider"
+}
+
+variable "github_repository_owner_id" {
+  type    = string
+  default = "60843722"
+}
+
+variable "github_repository" {
+  type    = string
+  default = "kitsuya0828/turborepo-remote-cache"
+}
+
+variable "github_ref" {
+  type    = string
+  default = "refs/heads/main"
+}
