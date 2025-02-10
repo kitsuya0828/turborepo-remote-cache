@@ -8,10 +8,6 @@ resource "google_cloud_run_v2_service" "default" {
     containers {
       image = data.google_artifact_registry_docker_image.default.self_link
 
-      ports {
-        container_port = 3000
-      }
-
       env {
         name  = "TURBO_TOKEN"
         value = random_password.password.result
