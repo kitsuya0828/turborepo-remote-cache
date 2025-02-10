@@ -4,5 +4,8 @@ provider "google" {
   zone    = var.zone
 }
 
+provider "random" {
+}
+
 data "google_project" "default" {
 }

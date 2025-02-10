@@ -41,3 +41,13 @@ variable "github_ref" {
   type    = string
   default = "refs/heads/main"
 }
+
+variable "artifact_registry_repository_id" {
+  type    = string
+  default = "turborepo-remote-cache"
+}
+
+variable "artifact_registry_image_name" {
+  type    = string
+  default = "turborepo-remote-cache:latest"
+}
