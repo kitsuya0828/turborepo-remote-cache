@@ -6,9 +6,6 @@ on:
     # paths:
     #   - "nginx/**"
 
-permissions:
-  packages: write
-
 jobs:
   docker:
     runs-on: ubuntu-latest
