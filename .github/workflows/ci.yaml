@@ -34,6 +34,10 @@ jobs:
         volumes:
           - ${{ github.workspace }}/nginx/templates:/etc/nginx/templates
 
+    defaults:
+      run:
+        working-directory: ./repo
+
     env:
      TURBO_API: "localhost:8080"
      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -42,11 +46,6 @@ jobs:
     steps:
     - name: Check out code
       uses: 'actions/checkout@v4'
-      with:
-        sparse-checkout: |
-          *
-          !nginx/*
-        sparse-checkout-cone-mode: false
 
     - uses: pnpm/action-setup@v3
 
