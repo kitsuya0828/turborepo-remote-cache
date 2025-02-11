@@ -5,35 +5,10 @@ on:
     branches: ["main"]
 
 jobs:
-  auth:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-    outputs:
-      id_token: ${{ steps.auth.outputs.id_token }}
-    steps:
-    - uses: 'google-github-actions/auth@v2'
-      id: auth
-      with:
-        project_id: ${{ secrets.PROJECT_ID }}
-        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.SERVICE_ACCOUNT }}
-
   build:
     runs-on: ubuntu-latest
-    needs: auth
-    services:
-      nginx:
-        image: ghcr.io/kitsuya0828/nginx:latest
-        ports:
-          - 8080:80
-        env:
-          TURBO_API: ${{ secrets.TURBO_API }}
-          AUTH_TOKEN: ${{ needs.auth.outputs.id_token }}
-
     env:
-      TURBO_API: "http://127.0.0.1:8080"
+      TURBO_API: ${{ secrets.TURBO_API }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
