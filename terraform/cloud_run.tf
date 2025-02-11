@@ -18,6 +18,16 @@ resource "google_cloud_run_v2_service" "default" {
         name  = "TURBO_TOKEN"
         value = random_password.password.result
       }
+
+      env {
+        name  = "STORAGE_PROVIDER"
+        value = "google-cloud-storage"
+      }
+
+      env {
+        name  = "STORAGE_PATH"
+        value = google_storage_bucket.default.name
+      }
     }
   }
 }
