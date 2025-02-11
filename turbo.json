@@ -18,4 +18,7 @@
       "persistent": true
     }
   }
+  "remoteCache": {
+    "signature": true
+  }
 }
