@@ -25,18 +25,12 @@ jobs:
     needs: auth
     services:
       nginx:
-        image: nginx:latest
+        image: ghcr.io/kitsuya0828/nginx:latest
         ports:
           - 8080:80
         env:
           TURBO_API: ${{ secrets.TURBO_API }}
           AUTH_TOKEN: ${{ needs.auth.outputs.id_token }}
-        volumes:
-          - ${{ github.workspace }}/nginx/templates:/etc/nginx/templates
-
-    defaults:
-      run:
-        working-directory: ./repo
 
     env:
      TURBO_API: "localhost:8080"
@@ -46,19 +40,14 @@ jobs:
     steps:
     - name: Check out code
       uses: 'actions/checkout@v4'
-      with:
-        path: repo
 
     - uses: pnpm/action-setup@v3
-      with:
-        dest: './repo'
 
     - name: Setup Node.js environment
       uses: actions/setup-node@v4
       with:
         node-version: 22
         cache: 'pnpm'
-        cache-dependency-path: './repo'
  
     - name: Install dependencies
       run: pnpm install
@@ -69,5 +58,3 @@ jobs:
     - name: Build
       run: pnpm build
  
-    # - name: Test
-    #   run: pnpm test
