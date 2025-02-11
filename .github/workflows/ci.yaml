@@ -43,7 +43,10 @@ jobs:
     - name: Check out code
       uses: 'actions/checkout@v4'
       with:
-        clean: false
+        sparse-checkout: |
+          !nginx/*
+          /*
+        sparse-checkout-cone-mode: false
 
     - uses: pnpm/action-setup@v3
 
