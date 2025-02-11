@@ -33,9 +33,9 @@ jobs:
           AUTH_TOKEN: ${{ needs.auth.outputs.id_token }}
 
     env:
-     TURBO_API: "localhost:8080"
-     TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-     TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      TURBO_API: "http://localhost:8080"
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
     steps:
     - name: Check out code
