@@ -23,6 +23,7 @@ Cached:    1 cached, 2 total
 
 Originally, the build took about 50 seconds without caching.
 
+<img width="1512" alt="Screenshot" src="https://github.com/user-attachments/assets/955cee4b-602d-49f1-a168-7e8ea9a5bffa" />
 ---
 
 # Turborepo starter
