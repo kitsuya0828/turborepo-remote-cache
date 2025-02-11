@@ -7,6 +7,9 @@ on:
 jobs:
   auth:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     outputs:
       id_token: ${{ steps.auth.outputs.id_token }}
     steps:
@@ -35,10 +38,6 @@ jobs:
      TURBO_API: "localhost:8080"
      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-
-    permissions:
-      contents: 'read'
-      id-token: 'write'
 
     steps:
     - name: Check out code
