@@ -1,5 +1,30 @@
 # Turborepo Remote Cache
 
+This is a PoC for setting up a Turborepo Remote Cache using Cloud Run, Cloud Storage, and Terraform.
+
+After making an intentional change in one of the two apps, the build results were:
+
+```
+Run pnpm build
+
+> my-turborepo@ build /home/runner/work/turborepo-remote-cache/turborepo-remote-cache
+> turbo build
+
+• Packages in scope: @repo/eslint-config, @repo/typescript-config, @repo/ui, docs, web
+• Running build in 5 packages
+• Remote caching enabled
+docs:build
+web:build
+
+ Tasks:    2 successful, 2 total
+Cached:    1 cached, 2 total
+  Time:    31.2s 
+```
+
+Originally, the build took about 50 seconds without caching.
+
+---
+
 # Turborepo starter
 
 This Turborepo starter is maintained by the Turborepo core team.
