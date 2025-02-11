@@ -44,8 +44,8 @@ jobs:
       uses: 'actions/checkout@v4'
       with:
         sparse-checkout: |
+          *
           !nginx/*
-          /*
         sparse-checkout-cone-mode: false
 
     - uses: pnpm/action-setup@v3
