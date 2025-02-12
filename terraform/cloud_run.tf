@@ -12,7 +12,8 @@ resource "google_cloud_run_v2_service" "default" {
     service_account = google_service_account.cloud_run.email
 
     containers {
-      image = data.google_artifact_registry_docker_image.default.self_link
+      name  = "app"
+      image = data.google_artifact_registry_docker_image.app.self_link
 
       env {
         name  = "TURBO_TOKEN"
@@ -27,6 +28,41 @@ resource "google_cloud_run_v2_service" "default" {
       env {
         name  = "STORAGE_PATH"
         value = google_storage_bucket.default.name
+      }
+
+      env {
+        name  = "PORT"
+        value = "3000"
+      }
+
+      startup_probe {
+        tcp_socket {
+          port = 3000
+        }
+      }
+    }
+
+    containers {
+      name  = "proxy"
+      image = data.google_artifact_registry_docker_image.proxy.self_link
+
+      ports {
+        container_port = 8080
+      }
+      depends_on = ["app"]
+
+      env {
+        name  = "TURBO_API"
+        value = "http://localhost:3000"
+      }
+      env {
+        name  = "TURBO_TOKEN"
+        value = random_password.password.result
+      }
+      startup_probe {
+        tcp_socket {
+          port = 8080
+        }
       }
     }
   }

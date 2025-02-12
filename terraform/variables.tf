@@ -17,11 +17,6 @@ variable "artifact_registry_repository_id" {
   default = "turborepo-remote-cache"
 }
 
-variable "artifact_registry_image_name" {
-  type    = string
-  default = "turborepo-remote-cache:latest"
-}
-
 variable "storage_bucket_name" {
   type    = string
   default = "kitsuya0828-turborepo-remote-cache"
