@@ -7,14 +7,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     env:
       TURBO_API: ${{ secrets.TURBO_API }}
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
     steps:
     - name: Check out code
       uses: 'actions/checkout@v4'
+    
+    - uses: 'google-github-actions/auth@v2'
+      id: auth
+      with:
+        project_id: ${{ secrets.PROJECT_ID }}
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+    - run: echo "TURBO_TOKEN=${{ steps.auth.outputs.token }}" >> $GITHUB_ENV
 
     - uses: pnpm/action-setup@v3
 

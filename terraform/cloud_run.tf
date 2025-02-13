@@ -72,7 +72,7 @@ data "google_iam_policy" "cloud_run" {
   binding {
     role = "roles/run.invoker"
     members = [
-      "allUsers"
+      "serviceAccount:${google_service_account.github_actions.email}"
     ]
   }
 }
