@@ -25,6 +25,7 @@ jobs:
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.SERVICE_ACCOUNT }}
         token_format: 'id_token'
+        id_token_audience: ${{ secrets.TURBO_API }}
 
     - run: echo "TURBO_TOKEN=${{ steps.auth.outputs.id_token }}" >> $GITHUB_ENV
 
