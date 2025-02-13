@@ -25,7 +25,7 @@ jobs:
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-    - run: echo "TURBO_TOKEN=${{ steps.auth.outputs.token }}" >> $GITHUB_ENV
+    - run: echo "TURBO_TOKEN=${{ steps.auth.outputs.id_token }}" >> $GITHUB_ENV
 
     - uses: pnpm/action-setup@v3
 
