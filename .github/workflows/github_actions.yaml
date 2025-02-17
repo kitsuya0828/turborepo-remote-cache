@@ -17,11 +17,11 @@ jobs:
           - 3000:3000
         env:
           TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          STORAGE_PROVIDER: 'google-cloud-storage'
-          STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
-          GCS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          GCS_PRIVATE_KEY: ${{ secrets.GCS_PRIVATE_KEY }}
-          GCS_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT }}
+          # STORAGE_PROVIDER: 'google-cloud-storage'
+          # STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
+          # GCS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          # GCS_PRIVATE_KEY: ${{ secrets.GCS_PRIVATE_KEY }}
+          # GCS_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT }}
         options: >-
           --health-cmd "true"
           --health-interval 1s
