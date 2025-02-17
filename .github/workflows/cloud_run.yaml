@@ -1,8 +1,7 @@
-name: CI
+name: CI (Cloud Run)
 
 on:
-  push:
-    branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   build:

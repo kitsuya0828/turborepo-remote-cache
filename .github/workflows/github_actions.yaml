@@ -1,0 +1,72 @@
+name: CI (GitHub Actions)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  auth:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Check out code
+      uses: 'actions/checkout@v4'
+    
+    - uses: 'google-github-actions/auth@v2'
+      id: auth
+      with:
+        project_id: ${{ secrets.PROJECT_ID }}
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+    - name: Get private key
+      run: |
+        GCS_PRIVATE_KEY=$(cat ${{ steps.auth.outputs.credentials_file_path }} | jq --raw-output .private_key)
+        echo "GCS_PRIVATE_KEY=${GCS_PRIVATE_KEY}" >> $GITHUB_ENV
+
+  build:
+    runs-on: ubuntu-latest
+    needs: auth
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      TURBO_API: "http://127.0.0.1:3000"
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      TURO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    services:
+      api:
+        image: ducktors/turborepo-remote-cache:latest
+        ports:
+          - 3000:3000
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          STORAGE_PROVIDER: 'google-cloud-storage'
+          STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
+          GCS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          GCS_PRIVATE_KEY: ${{ secrets.GCS_PRIVATE_KEY }}
+          GCS_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT }}
+
+    steps:
+    - name: Check out code
+      uses: 'actions/checkout@v4'
+
+    - uses: pnpm/action-setup@v3
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'pnpm'
+ 
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Lint
+      run: pnpm lint
+ 
+    - name: Build
+      run: pnpm build
+ 
