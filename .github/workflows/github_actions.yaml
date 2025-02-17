@@ -35,7 +35,7 @@ jobs:
     env:
       TURBO_API: "http://127.0.0.1:3000"
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-      TURO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     services:
       api:
         image: ducktors/turborepo-remote-cache:latest
