@@ -48,6 +48,8 @@ jobs:
           GCS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GCS_PRIVATE_KEY: ${{ secrets.GCS_PRIVATE_KEY }}
           GCS_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT }}
+        options: >-
+          --health-cmd "curl -f http://localhost:3000/v8/artifacts/status"
 
     steps:
     - name: Check out code
