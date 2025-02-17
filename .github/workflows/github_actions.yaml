@@ -4,28 +4,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  auth:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-
-    steps:
-    - name: Check out code
-      uses: 'actions/checkout@v4'
-    
-    - uses: 'google-github-actions/auth@v2'
-      id: auth
-      with:
-        project_id: ${{ secrets.PROJECT_ID }}
-        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.SERVICE_ACCOUNT }}
-
-    - name: Get private key
-      run: |
-        GCS_PRIVATE_KEY=$(cat ${{ steps.auth.outputs.credentials_file_path }} | jq --raw-output .private_key)
-        echo "GCS_PRIVATE_KEY=${GCS_PRIVATE_KEY}" >> $GITHUB_ENV
-
   build:
     runs-on: ubuntu-latest
     needs: auth
