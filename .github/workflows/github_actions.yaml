@@ -33,7 +33,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     env:
-      TURBO_API: "http://127.0.0.1:3000"
+      TURBO_API: "localhost:3000"
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     services:
