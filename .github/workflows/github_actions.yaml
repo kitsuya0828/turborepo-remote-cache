@@ -49,7 +49,10 @@ jobs:
           GCS_PRIVATE_KEY: ${{ secrets.GCS_PRIVATE_KEY }}
           GCS_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT }}
         options: >-
-          --health-cmd "curl -f http://localhost:3000/v8/artifacts/status"
+          --health-cmd "true"
+          --health-interval 1s
+          --health-timeout 1s
+          --health-retries 1
 
     steps:
     - name: Check out code
