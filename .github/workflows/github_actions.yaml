@@ -10,7 +10,29 @@ jobs:
       contents: 'read'
       id-token: 'write'
     env:
-      TURBO_API_PORT: 3000
+      TURBO_API: "http://localhost:3000"
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      STORAGE_PROVIDER: 'google-cloud-storage'
+      STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
+
+    # services:
+    #   api:
+    #     image: ducktors/turborepo-remote-cache:latest
+    #     ports:
+    #       - 3000:3000
+    #     env:
+    #       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    #       STORAGE_PROVIDER: 'google-cloud-storage'
+    #       STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
+    #       GCS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+    #       GCS_PRIVATE_KEY: ${{ secrets.GCS_PRIVATE_KEY }}
+    #       GCS_CLIENT_EMAIL: ${{ secrets.SERVICE_ACCOUNT }}
+    #     options: >-
+    #       --health-cmd "true"
+    #       --health-interval 1s
+    #       --health-timeout 1s
+    #       --health-retries 1
 
     steps:
     - name: Check out code
@@ -36,19 +58,10 @@ jobs:
 
     - name: Run turborepo-remote-cache
       run: npx turborepo-remote-cache --yes & sleep 5
-      env:
-        TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-        PORT: ${{ env.TURBO_API_PORT }}
-        STORAGE_PROVIDER: 'google-cloud-storage'
-        STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
 
     - name: Lint
       run: pnpm lint
  
     - name: Build
       run: pnpm build
-      env:
-        TURBO_API: 'http://localhost:${{ env.TURBO_API_PORT }}'
-        TURBO_TEAM: ${{ env.TURBO_TEAM }}
-        TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
  
