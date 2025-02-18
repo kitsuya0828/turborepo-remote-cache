@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     env:
       TURBO_API: "http://localhost:3000"
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
