@@ -13,6 +13,9 @@ jobs:
       TURBO_API: "http://localhost:3000"
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      STORAGE_PROVIDER: 'google-cloud-storage'
+      STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
+
     # services:
     #   api:
     #     image: ducktors/turborepo-remote-cache:latest
@@ -54,7 +57,7 @@ jobs:
       run: pnpm install
 
     - name: Run turborepo-remote-cache
-      run: npx turborepo-remote-cache --yes &
+      run: npx turborepo-remote-cache --yes & sleep 5
 
     - name: Lint
       run: pnpm lint
