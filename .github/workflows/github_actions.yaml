@@ -34,7 +34,7 @@ jobs:
         cache: 'pnpm'
 
     - name: Run turborepo-remote-cache
-      run: npx turborepo-remote-cache@2.2.12
+      run: npx turborepo-remote-cache@2.2.12 &
       env:
         STORAGE_PROVIDER: 'google-cloud-storage'
         STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
