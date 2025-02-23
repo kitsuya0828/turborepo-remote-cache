@@ -22,47 +22,26 @@ runs:
         echo "TURBO_API=http://localhost:${{ inputs.port }}" >> $GITHUB_ENV
         echo "TURBO_TEAM=${{ github.event.repository.name }}" >> $GITHUB_ENV
         echo "TURBO_TOKEN=turbo_token" >> $GITHUB_ENV
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: "npm"
-        cache-dependency-path: "package.json"
     - shell: bash
-      run: npm install
+      run: npx turborepo-remote-cache@2.2.12 &
+      env:
+        PORT: ${{ inputs.port }}
+        STORAGE_PROVIDER: "google-cloud-storage"
+        STORAGE_PATH: ${{ inputs.storage_path }}
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ inputs.google_application_credentials }}
     - shell: bash
       run: |
-        npx turborepo-remote-cache &
         echo "Waiting for server to become healthy..."
-        for i in {1..5}; do
+        for i in {1..10}; do
           status=$(curl -s -o /dev/null -w "%{http_code}" "${TURBO_API}/v8/artifacts/status" || echo "000")
           echo "Attempt $i: Received status code $status"
           if [ "$status" -eq 200 ]; then
             echo "Server is healthy."
             exit 0
           fi
-          echo "Server not yet healthy. Retrying in 0.5 seconds..."
-          sleep 0.5
+          echo "Server not yet healthy. Retrying in 1 seconds..."
+          sleep 1
         done
-        echo "Server health check failed after 5 attempts."
+        echo "Server health check failed after 10 attempts."
         exit 1
-      env:
-        PORT: ${{ inputs.port }}
-        STORAGE_PROVIDER: "google-cloud-storage"
-        STORAGE_PATH: ${{ inputs.storage_path }}
-        GOOGLE_APPLICATION_CREDENTIALS: ${{ inputs.google_application_credentials }}
-    # - shell: bash
-    #   run: |
-    #     echo "Waiting for server to become healthy..."
-    #     for i in {1..10}; do
-    #       status=$(curl -s -o /dev/null -w "%{http_code}" "${TURBO_API}/v8/artifacts/status" || echo "000")
-    #       echo "Attempt $i: Received status code $status"
-    #       if [ "$status" -eq 200 ]; then
-    #         echo "Server is healthy."
-    #         exit 0
-    #       fi
-    #       echo "Server not yet healthy. Retrying in 3 seconds..."
-    #       sleep 3
-    #     done
-    #     echo "Server health check failed after 10 attempts."
-    #     exit 1
 
