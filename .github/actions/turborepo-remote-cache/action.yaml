@@ -33,17 +33,17 @@ runs:
       run: |
         npx turborepo-remote-cache &
         echo "Waiting for server to become healthy..."
-        for i in {1..10}; do
+        for i in {1..5}; do
           status=$(curl -s -o /dev/null -w "%{http_code}" "${TURBO_API}/v8/artifacts/status" || echo "000")
           echo "Attempt $i: Received status code $status"
           if [ "$status" -eq 200 ]; then
             echo "Server is healthy."
             exit 0
           fi
-          echo "Server not yet healthy. Retrying in 3 seconds..."
-          sleep 3
+          echo "Server not yet healthy. Retrying in 0.5 seconds..."
+          sleep 0.5
         done
-        echo "Server health check failed after 10 attempts."
+        echo "Server health check failed after 5 attempts."
         exit 1
       env:
         PORT: ${{ inputs.port }}
