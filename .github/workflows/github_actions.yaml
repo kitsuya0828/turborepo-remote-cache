@@ -24,6 +24,13 @@ jobs:
         project_id: ${{ secrets.PROJECT_ID }}
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.SERVICE_ACCOUNT }}
+    
+    - name: Run turbo-remote-cache
+      uses: ./.github/actions/turbo-remote-cache
+      with:
+        google_cloud_project: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
+        google_application_credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        storage_path: ${{ secrets.STORAGE_PATH }}
 
     - uses: pnpm/action-setup@v3
 
@@ -32,28 +39,6 @@ jobs:
       with:
         node-version: 22
         cache: 'pnpm'
-
-    - name: Run turborepo-remote-cache
-      run: npx turborepo-remote-cache@2.2.12 &
-      env:
-        STORAGE_PROVIDER: 'google-cloud-storage'
-        STORAGE_PATH: ${{ secrets.STORAGE_PATH }}
-
-    - name: Health check
-      run: |
-        echo "Waiting for server to become healthy..."
-        for i in {1..10}; do
-          status=$(curl -s -o /dev/null -w "%{http_code}" "${TURBO_API}/v8/artifacts/status" || echo "000")
-          echo "Attempt $i: Received status code $status"
-          if [ "$status" -eq 200 ]; then
-            echo "Server is healthy."
-            exit 0
-          fi
-          echo "Server not yet healthy. Retrying in 5 seconds..."
-          sleep 5
-        done
-        echo "Server health check failed after 10 attempts."
-        exit 1
 
     - name: Install dependencies
       run: pnpm install
