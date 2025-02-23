@@ -25,8 +25,8 @@ jobs:
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.SERVICE_ACCOUNT }}
     
-    - name: Run turbo-remote-cache
-      uses: ./.github/actions/turbo-remote-cache
+    - name: Run turborepo-remote-cache
+      uses: ./.github/actions/turborepo-remote-cache
       with:
         google_cloud_project: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
         google_application_credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}

@@ -1,4 +1,4 @@
-name: turbo-remote-cache
+name: turborepo-remote-cache
 description: "run turborepo-remote-cache server"
 inputs:
   port:
