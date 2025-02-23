@@ -28,8 +28,8 @@ jobs:
     - name: Run turborepo-remote-cache
       uses: ./.github/actions/turborepo-remote-cache
       with:
-        google_cloud_project: ${{ secrets.GOOGLE_CLOUD_PROJECT }}
-        google_application_credentials: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        google_cloud_project: ${{ env.GOOGLE_CLOUD_PROJECT }}
+        google_application_credentials: ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
         storage_path: ${{ secrets.STORAGE_PATH }}
 
     - uses: pnpm/action-setup@v3
