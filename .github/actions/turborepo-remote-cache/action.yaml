@@ -23,9 +23,9 @@ runs:
         echo "TURBO_TEAM=${{ github.event.repository.name }}" >> $GITHUB_ENV
         echo "TURBO_TOKEN=turbo_token" >> $GITHUB_ENV
 
-    - name: Install dependencies
-      run: pnpm add -g turborepo-remote-cache
-      shell: bash
+    # - name: Install dependencies
+    #   run: pnpm add -g turborepo-remote-cache
+    #   shell: bash
 
     - shell: bash
       run: pnpm exec turborepo-remote-cache &
