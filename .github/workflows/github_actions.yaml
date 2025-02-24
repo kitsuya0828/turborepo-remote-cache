@@ -20,13 +20,6 @@ jobs:
         project_id: ${{ secrets.PROJECT_ID }}
         workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         service_account: ${{ secrets.SERVICE_ACCOUNT }}
-    
-    - name: Run turborepo-remote-cache
-      uses: ./.github/actions/turborepo-remote-cache
-      with:
-        google_cloud_project: ${{ env.GOOGLE_CLOUD_PROJECT }}
-        google_application_credentials: ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
-        storage_path: ${{ secrets.STORAGE_PATH }}
 
     - uses: pnpm/action-setup@v3
 
@@ -35,6 +28,13 @@ jobs:
       with:
         node-version: 22
         cache: 'pnpm'
+    
+    - name: Run turborepo-remote-cache
+      uses: ./.github/actions/turborepo-remote-cache
+      with:
+        google_cloud_project: ${{ env.GOOGLE_CLOUD_PROJECT }}
+        google_application_credentials: ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
+        storage_path: ${{ secrets.STORAGE_PATH }}
 
     - name: Install dependencies
       run: pnpm install

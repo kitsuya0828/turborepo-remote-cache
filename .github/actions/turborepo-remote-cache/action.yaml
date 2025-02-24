@@ -23,27 +23,12 @@ runs:
         echo "TURBO_TEAM=${{ github.event.repository.name }}" >> $GITHUB_ENV
         echo "TURBO_TOKEN=turbo_token" >> $GITHUB_ENV
 
-    - uses: pnpm/action-setup@v3
-      working-directory: ${{ github.action_path }}
-      with:
-        version: 10
-        package_json_file: "package.json"
-
-    - name: Setup Node.js environment
-      working-directory: ${{ github.action_path }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: 'pnpm'
-
     - name: Install dependencies
-      run: pnpm install
-      working-directory: ${{ github.action_path }}
+      run: pnpm add -g turborepo-remote-cache
       shell: bash
 
     - shell: bash
-      run: pnpm exec turborepo-remote-cache &
-      working-directory: ${{ github.action_path }}
+      run: npx turborepo-remote-cache &
       env:
         PORT: ${{ inputs.port }}
         STORAGE_PROVIDER: "google-cloud-storage"
