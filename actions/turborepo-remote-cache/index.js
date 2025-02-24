@@ -26,6 +26,7 @@ async function run() {
           PATH: process.env.PATH + ':' + path.dirname(process.execPath)
       }
     });
+    serverProcess.unref();
     await new Promise(resolve =>  setTimeout(resolve, 3000));
     core.info(`turborepo-remote-cache started (PID: ${serverProcess.pid})`);
     core.setOutput("server-pid", serverProcess.pid);
