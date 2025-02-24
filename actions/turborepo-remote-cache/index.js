@@ -18,6 +18,7 @@ async function run() {
     const serverProcess = spawn(command, args, {
       stdio: 'inherit',
       detached: true,
+      shell: true,
       env: {
           PORT: "3001",
           TURBO_TOKEN: "turbo-token",
