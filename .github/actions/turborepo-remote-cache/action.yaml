@@ -28,7 +28,7 @@ runs:
       shell: bash
 
     - shell: bash
-      run: npx turborepo-remote-cache &
+      run: pnpm exec turborepo-remote-cache &
       env:
         PORT: ${{ inputs.port }}
         STORAGE_PROVIDER: "google-cloud-storage"
