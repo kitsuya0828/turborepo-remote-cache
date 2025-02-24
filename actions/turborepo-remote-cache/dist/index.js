@@ -31548,7 +31548,7 @@ async function checkHealth() {
   core.info("Waiting for server to become healthy...");
   for (let i = 1; i <= 10; i++) {
     try {
-      const response = await fetch(`localhost:${PORT}/v8/artifacts/status`);
+      const response = await fetch(`http://localhost:${PORT}/v8/artifacts/status`);
       const status = response.status;
       console.log(`Attempt ${i}: Received status code ${status}`);
       if (status === 200) {
