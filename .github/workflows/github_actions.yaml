@@ -33,7 +33,7 @@ jobs:
       run: pnpm install
 
     - name: Hello world action step
-      uses: ./actions/turborepo-remote-cache
+      uses: actions/turborepo-remote-cache
     
     - name: Run turborepo-remote-cache
       uses: ./.github/actions/turborepo-remote-cache
