@@ -34,8 +34,9 @@ runs:
         node-version: 22
         cache: 'pnpm'
 
-    - shell: bash
-      run: pnpm add -g turborepo-remote-cache
+    - name: Install dependencies
+      run: pnpm install
+      shell: bash
 
     - shell: bash
       run: pnpm exec turborepo-remote-cache &
