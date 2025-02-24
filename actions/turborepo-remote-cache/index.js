@@ -2,6 +2,29 @@ const core = require('@actions/core');
 // const github = require('@actions/github');
 const { spawn } = require('child_process');
 const path = require('path');
+const fetch = require('node-fetch');
+
+const PORT = 3001;
+
+async function checkHealth() {
+  core.info("Waiting for server to become healthy...");
+  for (let i = 1; i <= 10; i++) {
+    try {
+      const response = await fetch(`localhost:${PORT}/v8/artifacts/status`);
+      const status = response.status;
+      console.log(`Attempt ${i}: Received status code ${status}`);
+      if (status === 200) {
+        console.log("Server is healthy.");
+        process.exit(0);
+      }
+    } catch (error) {
+      console.log(`Attempt ${i}: Error occurred. Retrying in 1 second...`);
+    }
+    await new Promise(resolve => setTimeout(resolve, 1000));  // Sleep for 1 second
+  }
+  console.log("Server health check failed after 10 attempts.");
+  process.exit(1);
+}
 
 async function run() {
   try {
@@ -21,15 +44,15 @@ async function run() {
       detached: true,
       shell: true,
       env: {
-          PORT: "3001",
+          PORT: PORT,
           TURBO_TOKEN: "turbo-token",
           PATH: process.env.PATH + ':' + path.dirname(process.execPath)
       }
     });
     serverProcess.unref();
-    await new Promise(resolve =>  setTimeout(resolve, 3000));
     core.info(`turborepo-remote-cache started (PID: ${serverProcess.pid})`);
     core.setOutput("server-pid", serverProcess.pid);
+    await checkHealth();
   } catch (error) {
     core.setFailed(error.message);
   }
