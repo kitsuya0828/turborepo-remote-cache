@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 // const github = require('@actions/github');
 const { spawn } = require('child_process');
+const path = require('path');
 
 async function run() {
   try {
@@ -22,6 +23,7 @@ async function run() {
       env: {
           PORT: "3001",
           TURBO_TOKEN: "turbo-token",
+          PATH: process.env.PATH + ':' + path.dirname(process.execPath)
       }
     });
     await new Promise(resolve =>  setTimeout(resolve, 3000));

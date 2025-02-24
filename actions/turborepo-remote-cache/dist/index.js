@@ -27558,6 +27558,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(9221);
 // const github = require('@actions/github');
 const { spawn } = __nccwpck_require__(5317);
+const path = __nccwpck_require__(6928);
 
 async function run() {
   try {
@@ -27579,6 +27580,7 @@ async function run() {
       env: {
           PORT: "3001",
           TURBO_TOKEN: "turbo-token",
+          PATH: process.env.PATH + ':' + path.dirname(process.execPath)
       }
     });
     await new Promise(resolve =>  setTimeout(resolve, 3000));
