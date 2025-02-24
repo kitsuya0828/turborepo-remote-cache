@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 const PORT = 3001;
 
 async function checkHealth() {
-  core.info("Waiting for server to become healthy...");
+  console.log("Waiting for server to become healthy...");
   for (let i = 1; i <= 10; i++) {
     try {
       const response = await fetch(`http://localhost:${PORT}/v8/artifacts/status`);
@@ -52,6 +52,7 @@ async function run() {
     serverProcess.unref();
     core.info(`turborepo-remote-cache started (PID: ${serverProcess.pid})`);
     core.setOutput("server-pid", serverProcess.pid);
+    await new Promise(resolve => setTimeout(resolve, 1000));
     await checkHealth();
   } catch (error) {
     core.setFailed(error.message);
