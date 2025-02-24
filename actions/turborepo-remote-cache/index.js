@@ -1,10 +1,13 @@
 const core = require('@actions/core');
-// const github = require('@actions/github');
+const github = require('@actions/github');
 const { spawn } = require('child_process');
 const path = require('path');
 const fetch = require('node-fetch');
 
-const PORT = 3001;
+const PORT = core.getInput('port');
+const GOOGLE_CLOUD_PROJECT = core.getInput('google_cloud_project', { required: true });
+const GOOGLE_APPLICATION_CREDENTIALS = core.getInput('google_application_credentials', { required: true });
+const STORAGE_PATH = core.getInput('storage_path', { required: true });
 
 async function checkHealth() {
   console.log("Waiting for server to become healthy...");
@@ -28,14 +31,11 @@ async function checkHealth() {
 
 async function run() {
   try {
-    // // `who-to-greet` input defined in action metadata file
-    // const nameToGreet = core.getInput('who-to-greet');
-    // console.log(`Hello ${nameToGreet}!`);
-    // const time = (new Date()).toTimeString();
-    // core.setOutput("time", time);
-    // // Get the JSON webhook payload for the event that triggered the workflow
-    // const payload = JSON.stringify(github.context.payload, undefined, 2)
-    // console.log(`The event payload: ${payload}`);
+    core.exportVariable('TURBO_TOKEN', 'turbo-token');
+    core.exportVariable('TURBO_API', `http://localhost:${PORT}`);
+    const { repo } = github.context.repo;
+    core.exportVariable('TURBO_TEAM', repo);
+
     const command = 'npx';
     const args = ['turborepo-remote-cache'];
     core.info(`Starting turborepo-remote-cache with command: ${command} ${args.join(' ')}`);
@@ -44,9 +44,12 @@ async function run() {
       detached: true,
       shell: true,
       env: {
+          PATH: process.env.PATH + ':' + path.dirname(process.execPath),
           PORT: PORT,
-          TURBO_TOKEN: "turbo-token",
-          PATH: process.env.PATH + ':' + path.dirname(process.execPath)
+          GOOGLE_CLOUD_PROJECT: GOOGLE_CLOUD_PROJECT,
+          STORAGE_PROVIDER: "google-cloud-storage",
+          GOOGLE_APPLICATION_CREDENTIALS: GOOGLE_APPLICATION_CREDENTIALS,
+          STORAGE_PATH: STORAGE_PATH,
       }
     });
     serverProcess.unref();
