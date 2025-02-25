@@ -32,19 +32,19 @@ jobs:
     - name: Install dependencies
       run: pnpm install
 
-    - name: Run turborepo-remote-cache with JavaScript
-      uses: ./actions/turborepo-remote-cache
-      with:
-        google_cloud_project: ${{ env.GOOGLE_CLOUD_PROJECT }}
-        google_application_credentials: ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
-        storage_path: ${{ secrets.STORAGE_PATH }}
-    
-    # - name: Run turborepo-remote-cache
-    #   uses: ./.github/actions/turborepo-remote-cache
+    # - name: Run turborepo-remote-cache with JavaScript
+    #   uses: ./actions/turborepo-remote-cache
     #   with:
     #     google_cloud_project: ${{ env.GOOGLE_CLOUD_PROJECT }}
     #     google_application_credentials: ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
     #     storage_path: ${{ secrets.STORAGE_PATH }}
+    
+    - name: Run turborepo-remote-cache
+      uses: ./.github/actions/turborepo-remote-cache
+      with:
+        google_cloud_project: ${{ env.GOOGLE_CLOUD_PROJECT }}
+        google_application_credentials: ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
+        storage_path: ${{ secrets.STORAGE_PATH }}
 
     - name: Lint
       run: pnpm lint
