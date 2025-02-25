@@ -3,6 +3,7 @@ const github = require('@actions/github');
 const { spawn } = require('child_process');
 const path = require('path');
 const fetch = require('node-fetch');
+const { env } = require('turborepo-remote-cache');
 
 const TURBO_TOKEN = 'turbo-token';
 const PORT = core.getInput('port');
@@ -32,6 +33,7 @@ async function checkHealth() {
 
 async function run() {
   try {
+    console.log(typeof env);
     core.exportVariable('TURBO_TOKEN', TURBO_TOKEN);
     core.exportVariable('TURBO_API', `http://localhost:${PORT}`);
     const { repo } = github.context.repo;
